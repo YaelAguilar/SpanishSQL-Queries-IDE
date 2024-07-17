@@ -1,8 +1,8 @@
 import sqlite3
 
 class Database:
-    def __init__(self):
-        self.connection = sqlite3.connect(':memory:')
+    def __init__(self, db_name='mi_base.db'):
+        self.connection = sqlite3.connect(db_name)
         self.cursor = self.connection.cursor()
         self.current_db = None
 

@@ -1,0 +1,1218 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DIFERENTE
+    MAYOR
+    MAYOR_IGUAL
+    MENOR
+    MENOR_IGUAL
+    O
+    Y
+
+Grammar
+
+Rule 0     S' -> query
+Rule 1     query -> query crear_base
+Rule 2     query -> query usar_base
+Rule 3     query -> query eliminar_base
+Rule 4     query -> query crear_tabla
+Rule 5     query -> query eliminar_tabla
+Rule 6     query -> query seleccionar
+Rule 7     query -> query insertar
+Rule 8     query -> query actualizar
+Rule 9     query -> query borrar
+Rule 10    query -> crear_base
+Rule 11    query -> usar_base
+Rule 12    query -> eliminar_base
+Rule 13    query -> crear_tabla
+Rule 14    query -> eliminar_tabla
+Rule 15    query -> seleccionar
+Rule 16    query -> insertar
+Rule 17    query -> actualizar
+Rule 18    query -> borrar
+Rule 19    crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+Rule 20    usar_base -> USAR IDENTIFICADOR PUNTO_COMA
+Rule 21    eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+Rule 22    crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA
+Rule 23    definiciones_columnas -> definiciones_columnas COMA definicion_columna
+Rule 24    definiciones_columnas -> definicion_columna
+Rule 25    definicion_columna -> IDENTIFICADOR tipo_columna
+Rule 26    tipo_columna -> IDENTIFICADOR LPAREN NUMERO RPAREN
+Rule 27    tipo_columna -> IDENTIFICADOR
+Rule 28    eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA
+Rule 29    seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+Rule 30    seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+Rule 31    lista_columnas -> lista_columnas COMA IDENTIFICADOR
+Rule 32    lista_columnas -> IDENTIFICADOR
+Rule 33    condicion_opt -> DONDE condicion
+Rule 34    condicion_opt -> empty
+Rule 35    condicion -> IDENTIFICADOR IGUAL valor
+Rule 36    valor -> NUMERO
+Rule 37    valor -> CADENA
+Rule 38    insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+Rule 39    lista_valores -> lista_valores COMA valor
+Rule 40    lista_valores -> valor
+Rule 41    actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA
+Rule 42    asignaciones -> asignaciones COMA asignacion
+Rule 43    asignaciones -> asignacion
+Rule 44    asignacion -> IDENTIFICADOR IGUAL valor
+Rule 45    borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+Rule 46    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ACTUALIZAR           : 41
+ASTERISCO            : 30
+BASEDEDATOS          : 19 21
+BORRAR               : 45
+CADENA               : 37
+COMA                 : 23 31 39 42
+CREAR                : 19 22
+DESDE                : 29 30 45
+DIFERENTE            : 
+DONDE                : 33
+ELIMINAR             : 21 28
+EN                   : 38
+FIJAR                : 41
+IDENTIFICADOR        : 19 20 21 22 25 26 27 28 29 30 31 32 35 38 41 44 45
+IGUAL                : 35 44
+INSERTAR             : 38
+LPAREN               : 22 26 38 38
+MAYOR                : 
+MAYOR_IGUAL          : 
+MENOR                : 
+MENOR_IGUAL          : 
+NUMERO               : 26 36
+O                    : 
+PUNTO_COMA           : 19 20 21 22 28 29 30 38 41 45
+RPAREN               : 22 26 38 38
+SELECCIONAR          : 29 30
+TABLA                : 22 28
+USAR                 : 20
+VALORES              : 38
+Y                    : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+actualizar           : 8 17
+asignacion           : 42 43
+asignaciones         : 41 42
+borrar               : 9 18
+condicion            : 33
+condicion_opt        : 29 30 41 45
+crear_base           : 1 10
+crear_tabla          : 4 13
+definicion_columna   : 23 24
+definiciones_columnas : 22 23
+eliminar_base        : 3 12
+eliminar_tabla       : 5 14
+empty                : 34
+insertar             : 7 16
+lista_columnas       : 29 31 38
+lista_valores        : 38 39
+query                : 1 2 3 4 5 6 7 8 9 0
+seleccionar          : 6 15
+tipo_columna         : 25
+usar_base            : 2 11
+valor                : 35 39 40 44
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . query
+    (1) query -> . query crear_base
+    (2) query -> . query usar_base
+    (3) query -> . query eliminar_base
+    (4) query -> . query crear_tabla
+    (5) query -> . query eliminar_tabla
+    (6) query -> . query seleccionar
+    (7) query -> . query insertar
+    (8) query -> . query actualizar
+    (9) query -> . query borrar
+    (10) query -> . crear_base
+    (11) query -> . usar_base
+    (12) query -> . eliminar_base
+    (13) query -> . crear_tabla
+    (14) query -> . eliminar_tabla
+    (15) query -> . seleccionar
+    (16) query -> . insertar
+    (17) query -> . actualizar
+    (18) query -> . borrar
+    (19) crear_base -> . CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+    (20) usar_base -> . USAR IDENTIFICADOR PUNTO_COMA
+    (21) eliminar_base -> . ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+    (22) crear_tabla -> . CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA
+    (28) eliminar_tabla -> . ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA
+    (29) seleccionar -> . SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+    (30) seleccionar -> . SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+    (38) insertar -> . INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+    (41) actualizar -> . ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA
+    (45) borrar -> . BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+
+    CREAR           shift and go to state 11
+    USAR            shift and go to state 12
+    ELIMINAR        shift and go to state 13
+    SELECCIONAR     shift and go to state 14
+    INSERTAR        shift and go to state 15
+    ACTUALIZAR      shift and go to state 16
+    BORRAR          shift and go to state 17
+
+    query                          shift and go to state 1
+    crear_base                     shift and go to state 2
+    usar_base                      shift and go to state 3
+    eliminar_base                  shift and go to state 4
+    crear_tabla                    shift and go to state 5
+    eliminar_tabla                 shift and go to state 6
+    seleccionar                    shift and go to state 7
+    insertar                       shift and go to state 8
+    actualizar                     shift and go to state 9
+    borrar                         shift and go to state 10
+
+state 1
+
+    (0) S' -> query .
+    (1) query -> query . crear_base
+    (2) query -> query . usar_base
+    (3) query -> query . eliminar_base
+    (4) query -> query . crear_tabla
+    (5) query -> query . eliminar_tabla
+    (6) query -> query . seleccionar
+    (7) query -> query . insertar
+    (8) query -> query . actualizar
+    (9) query -> query . borrar
+    (19) crear_base -> . CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+    (20) usar_base -> . USAR IDENTIFICADOR PUNTO_COMA
+    (21) eliminar_base -> . ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+    (22) crear_tabla -> . CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA
+    (28) eliminar_tabla -> . ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA
+    (29) seleccionar -> . SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+    (30) seleccionar -> . SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+    (38) insertar -> . INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+    (41) actualizar -> . ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA
+    (45) borrar -> . BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+
+    CREAR           shift and go to state 11
+    USAR            shift and go to state 12
+    ELIMINAR        shift and go to state 13
+    SELECCIONAR     shift and go to state 14
+    INSERTAR        shift and go to state 15
+    ACTUALIZAR      shift and go to state 16
+    BORRAR          shift and go to state 17
+
+    crear_base                     shift and go to state 18
+    usar_base                      shift and go to state 19
+    eliminar_base                  shift and go to state 20
+    crear_tabla                    shift and go to state 21
+    eliminar_tabla                 shift and go to state 22
+    seleccionar                    shift and go to state 23
+    insertar                       shift and go to state 24
+    actualizar                     shift and go to state 25
+    borrar                         shift and go to state 26
+
+state 2
+
+    (10) query -> crear_base .
+
+    CREAR           reduce using rule 10 (query -> crear_base .)
+    USAR            reduce using rule 10 (query -> crear_base .)
+    ELIMINAR        reduce using rule 10 (query -> crear_base .)
+    SELECCIONAR     reduce using rule 10 (query -> crear_base .)
+    INSERTAR        reduce using rule 10 (query -> crear_base .)
+    ACTUALIZAR      reduce using rule 10 (query -> crear_base .)
+    BORRAR          reduce using rule 10 (query -> crear_base .)
+    $end            reduce using rule 10 (query -> crear_base .)
+
+
+state 3
+
+    (11) query -> usar_base .
+
+    CREAR           reduce using rule 11 (query -> usar_base .)
+    USAR            reduce using rule 11 (query -> usar_base .)
+    ELIMINAR        reduce using rule 11 (query -> usar_base .)
+    SELECCIONAR     reduce using rule 11 (query -> usar_base .)
+    INSERTAR        reduce using rule 11 (query -> usar_base .)
+    ACTUALIZAR      reduce using rule 11 (query -> usar_base .)
+    BORRAR          reduce using rule 11 (query -> usar_base .)
+    $end            reduce using rule 11 (query -> usar_base .)
+
+
+state 4
+
+    (12) query -> eliminar_base .
+
+    CREAR           reduce using rule 12 (query -> eliminar_base .)
+    USAR            reduce using rule 12 (query -> eliminar_base .)
+    ELIMINAR        reduce using rule 12 (query -> eliminar_base .)
+    SELECCIONAR     reduce using rule 12 (query -> eliminar_base .)
+    INSERTAR        reduce using rule 12 (query -> eliminar_base .)
+    ACTUALIZAR      reduce using rule 12 (query -> eliminar_base .)
+    BORRAR          reduce using rule 12 (query -> eliminar_base .)
+    $end            reduce using rule 12 (query -> eliminar_base .)
+
+
+state 5
+
+    (13) query -> crear_tabla .
+
+    CREAR           reduce using rule 13 (query -> crear_tabla .)
+    USAR            reduce using rule 13 (query -> crear_tabla .)
+    ELIMINAR        reduce using rule 13 (query -> crear_tabla .)
+    SELECCIONAR     reduce using rule 13 (query -> crear_tabla .)
+    INSERTAR        reduce using rule 13 (query -> crear_tabla .)
+    ACTUALIZAR      reduce using rule 13 (query -> crear_tabla .)
+    BORRAR          reduce using rule 13 (query -> crear_tabla .)
+    $end            reduce using rule 13 (query -> crear_tabla .)
+
+
+state 6
+
+    (14) query -> eliminar_tabla .
+
+    CREAR           reduce using rule 14 (query -> eliminar_tabla .)
+    USAR            reduce using rule 14 (query -> eliminar_tabla .)
+    ELIMINAR        reduce using rule 14 (query -> eliminar_tabla .)
+    SELECCIONAR     reduce using rule 14 (query -> eliminar_tabla .)
+    INSERTAR        reduce using rule 14 (query -> eliminar_tabla .)
+    ACTUALIZAR      reduce using rule 14 (query -> eliminar_tabla .)
+    BORRAR          reduce using rule 14 (query -> eliminar_tabla .)
+    $end            reduce using rule 14 (query -> eliminar_tabla .)
+
+
+state 7
+
+    (15) query -> seleccionar .
+
+    CREAR           reduce using rule 15 (query -> seleccionar .)
+    USAR            reduce using rule 15 (query -> seleccionar .)
+    ELIMINAR        reduce using rule 15 (query -> seleccionar .)
+    SELECCIONAR     reduce using rule 15 (query -> seleccionar .)
+    INSERTAR        reduce using rule 15 (query -> seleccionar .)
+    ACTUALIZAR      reduce using rule 15 (query -> seleccionar .)
+    BORRAR          reduce using rule 15 (query -> seleccionar .)
+    $end            reduce using rule 15 (query -> seleccionar .)
+
+
+state 8
+
+    (16) query -> insertar .
+
+    CREAR           reduce using rule 16 (query -> insertar .)
+    USAR            reduce using rule 16 (query -> insertar .)
+    ELIMINAR        reduce using rule 16 (query -> insertar .)
+    SELECCIONAR     reduce using rule 16 (query -> insertar .)
+    INSERTAR        reduce using rule 16 (query -> insertar .)
+    ACTUALIZAR      reduce using rule 16 (query -> insertar .)
+    BORRAR          reduce using rule 16 (query -> insertar .)
+    $end            reduce using rule 16 (query -> insertar .)
+
+
+state 9
+
+    (17) query -> actualizar .
+
+    CREAR           reduce using rule 17 (query -> actualizar .)
+    USAR            reduce using rule 17 (query -> actualizar .)
+    ELIMINAR        reduce using rule 17 (query -> actualizar .)
+    SELECCIONAR     reduce using rule 17 (query -> actualizar .)
+    INSERTAR        reduce using rule 17 (query -> actualizar .)
+    ACTUALIZAR      reduce using rule 17 (query -> actualizar .)
+    BORRAR          reduce using rule 17 (query -> actualizar .)
+    $end            reduce using rule 17 (query -> actualizar .)
+
+
+state 10
+
+    (18) query -> borrar .
+
+    CREAR           reduce using rule 18 (query -> borrar .)
+    USAR            reduce using rule 18 (query -> borrar .)
+    ELIMINAR        reduce using rule 18 (query -> borrar .)
+    SELECCIONAR     reduce using rule 18 (query -> borrar .)
+    INSERTAR        reduce using rule 18 (query -> borrar .)
+    ACTUALIZAR      reduce using rule 18 (query -> borrar .)
+    BORRAR          reduce using rule 18 (query -> borrar .)
+    $end            reduce using rule 18 (query -> borrar .)
+
+
+state 11
+
+    (19) crear_base -> CREAR . BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+    (22) crear_tabla -> CREAR . TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA
+
+    BASEDEDATOS     shift and go to state 27
+    TABLA           shift and go to state 28
+
+
+state 12
+
+    (20) usar_base -> USAR . IDENTIFICADOR PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 29
+
+
+state 13
+
+    (21) eliminar_base -> ELIMINAR . BASEDEDATOS IDENTIFICADOR PUNTO_COMA
+    (28) eliminar_tabla -> ELIMINAR . TABLA IDENTIFICADOR PUNTO_COMA
+
+    BASEDEDATOS     shift and go to state 30
+    TABLA           shift and go to state 31
+
+
+state 14
+
+    (29) seleccionar -> SELECCIONAR . lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+    (30) seleccionar -> SELECCIONAR . ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+    (31) lista_columnas -> . lista_columnas COMA IDENTIFICADOR
+    (32) lista_columnas -> . IDENTIFICADOR
+
+    ASTERISCO       shift and go to state 34
+    IDENTIFICADOR   shift and go to state 33
+
+    lista_columnas                 shift and go to state 32
+
+state 15
+
+    (38) insertar -> INSERTAR . EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+
+    EN              shift and go to state 35
+
+
+state 16
+
+    (41) actualizar -> ACTUALIZAR . IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 36
+
+
+state 17
+
+    (45) borrar -> BORRAR . DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+
+    DESDE           shift and go to state 37
+
+
+state 18
+
+    (1) query -> query crear_base .
+
+    CREAR           reduce using rule 1 (query -> query crear_base .)
+    USAR            reduce using rule 1 (query -> query crear_base .)
+    ELIMINAR        reduce using rule 1 (query -> query crear_base .)
+    SELECCIONAR     reduce using rule 1 (query -> query crear_base .)
+    INSERTAR        reduce using rule 1 (query -> query crear_base .)
+    ACTUALIZAR      reduce using rule 1 (query -> query crear_base .)
+    BORRAR          reduce using rule 1 (query -> query crear_base .)
+    $end            reduce using rule 1 (query -> query crear_base .)
+
+
+state 19
+
+    (2) query -> query usar_base .
+
+    CREAR           reduce using rule 2 (query -> query usar_base .)
+    USAR            reduce using rule 2 (query -> query usar_base .)
+    ELIMINAR        reduce using rule 2 (query -> query usar_base .)
+    SELECCIONAR     reduce using rule 2 (query -> query usar_base .)
+    INSERTAR        reduce using rule 2 (query -> query usar_base .)
+    ACTUALIZAR      reduce using rule 2 (query -> query usar_base .)
+    BORRAR          reduce using rule 2 (query -> query usar_base .)
+    $end            reduce using rule 2 (query -> query usar_base .)
+
+
+state 20
+
+    (3) query -> query eliminar_base .
+
+    CREAR           reduce using rule 3 (query -> query eliminar_base .)
+    USAR            reduce using rule 3 (query -> query eliminar_base .)
+    ELIMINAR        reduce using rule 3 (query -> query eliminar_base .)
+    SELECCIONAR     reduce using rule 3 (query -> query eliminar_base .)
+    INSERTAR        reduce using rule 3 (query -> query eliminar_base .)
+    ACTUALIZAR      reduce using rule 3 (query -> query eliminar_base .)
+    BORRAR          reduce using rule 3 (query -> query eliminar_base .)
+    $end            reduce using rule 3 (query -> query eliminar_base .)
+
+
+state 21
+
+    (4) query -> query crear_tabla .
+
+    CREAR           reduce using rule 4 (query -> query crear_tabla .)
+    USAR            reduce using rule 4 (query -> query crear_tabla .)
+    ELIMINAR        reduce using rule 4 (query -> query crear_tabla .)
+    SELECCIONAR     reduce using rule 4 (query -> query crear_tabla .)
+    INSERTAR        reduce using rule 4 (query -> query crear_tabla .)
+    ACTUALIZAR      reduce using rule 4 (query -> query crear_tabla .)
+    BORRAR          reduce using rule 4 (query -> query crear_tabla .)
+    $end            reduce using rule 4 (query -> query crear_tabla .)
+
+
+state 22
+
+    (5) query -> query eliminar_tabla .
+
+    CREAR           reduce using rule 5 (query -> query eliminar_tabla .)
+    USAR            reduce using rule 5 (query -> query eliminar_tabla .)
+    ELIMINAR        reduce using rule 5 (query -> query eliminar_tabla .)
+    SELECCIONAR     reduce using rule 5 (query -> query eliminar_tabla .)
+    INSERTAR        reduce using rule 5 (query -> query eliminar_tabla .)
+    ACTUALIZAR      reduce using rule 5 (query -> query eliminar_tabla .)
+    BORRAR          reduce using rule 5 (query -> query eliminar_tabla .)
+    $end            reduce using rule 5 (query -> query eliminar_tabla .)
+
+
+state 23
+
+    (6) query -> query seleccionar .
+
+    CREAR           reduce using rule 6 (query -> query seleccionar .)
+    USAR            reduce using rule 6 (query -> query seleccionar .)
+    ELIMINAR        reduce using rule 6 (query -> query seleccionar .)
+    SELECCIONAR     reduce using rule 6 (query -> query seleccionar .)
+    INSERTAR        reduce using rule 6 (query -> query seleccionar .)
+    ACTUALIZAR      reduce using rule 6 (query -> query seleccionar .)
+    BORRAR          reduce using rule 6 (query -> query seleccionar .)
+    $end            reduce using rule 6 (query -> query seleccionar .)
+
+
+state 24
+
+    (7) query -> query insertar .
+
+    CREAR           reduce using rule 7 (query -> query insertar .)
+    USAR            reduce using rule 7 (query -> query insertar .)
+    ELIMINAR        reduce using rule 7 (query -> query insertar .)
+    SELECCIONAR     reduce using rule 7 (query -> query insertar .)
+    INSERTAR        reduce using rule 7 (query -> query insertar .)
+    ACTUALIZAR      reduce using rule 7 (query -> query insertar .)
+    BORRAR          reduce using rule 7 (query -> query insertar .)
+    $end            reduce using rule 7 (query -> query insertar .)
+
+
+state 25
+
+    (8) query -> query actualizar .
+
+    CREAR           reduce using rule 8 (query -> query actualizar .)
+    USAR            reduce using rule 8 (query -> query actualizar .)
+    ELIMINAR        reduce using rule 8 (query -> query actualizar .)
+    SELECCIONAR     reduce using rule 8 (query -> query actualizar .)
+    INSERTAR        reduce using rule 8 (query -> query actualizar .)
+    ACTUALIZAR      reduce using rule 8 (query -> query actualizar .)
+    BORRAR          reduce using rule 8 (query -> query actualizar .)
+    $end            reduce using rule 8 (query -> query actualizar .)
+
+
+state 26
+
+    (9) query -> query borrar .
+
+    CREAR           reduce using rule 9 (query -> query borrar .)
+    USAR            reduce using rule 9 (query -> query borrar .)
+    ELIMINAR        reduce using rule 9 (query -> query borrar .)
+    SELECCIONAR     reduce using rule 9 (query -> query borrar .)
+    INSERTAR        reduce using rule 9 (query -> query borrar .)
+    ACTUALIZAR      reduce using rule 9 (query -> query borrar .)
+    BORRAR          reduce using rule 9 (query -> query borrar .)
+    $end            reduce using rule 9 (query -> query borrar .)
+
+
+state 27
+
+    (19) crear_base -> CREAR BASEDEDATOS . IDENTIFICADOR PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 38
+
+
+state 28
+
+    (22) crear_tabla -> CREAR TABLA . IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 39
+
+
+state 29
+
+    (20) usar_base -> USAR IDENTIFICADOR . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 40
+
+
+state 30
+
+    (21) eliminar_base -> ELIMINAR BASEDEDATOS . IDENTIFICADOR PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 41
+
+
+state 31
+
+    (28) eliminar_tabla -> ELIMINAR TABLA . IDENTIFICADOR PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 42
+
+
+state 32
+
+    (29) seleccionar -> SELECCIONAR lista_columnas . DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+    (31) lista_columnas -> lista_columnas . COMA IDENTIFICADOR
+
+    DESDE           shift and go to state 43
+    COMA            shift and go to state 44
+
+
+state 33
+
+    (32) lista_columnas -> IDENTIFICADOR .
+
+    DESDE           reduce using rule 32 (lista_columnas -> IDENTIFICADOR .)
+    COMA            reduce using rule 32 (lista_columnas -> IDENTIFICADOR .)
+    RPAREN          reduce using rule 32 (lista_columnas -> IDENTIFICADOR .)
+
+
+state 34
+
+    (30) seleccionar -> SELECCIONAR ASTERISCO . DESDE IDENTIFICADOR condicion_opt PUNTO_COMA
+
+    DESDE           shift and go to state 45
+
+
+state 35
+
+    (38) insertar -> INSERTAR EN . IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 46
+
+
+state 36
+
+    (41) actualizar -> ACTUALIZAR IDENTIFICADOR . FIJAR asignaciones condicion_opt PUNTO_COMA
+
+    FIJAR           shift and go to state 47
+
+
+state 37
+
+    (45) borrar -> BORRAR DESDE . IDENTIFICADOR condicion_opt PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 48
+
+
+state 38
+
+    (19) crear_base -> CREAR BASEDEDATOS IDENTIFICADOR . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 49
+
+
+state 39
+
+    (22) crear_tabla -> CREAR TABLA IDENTIFICADOR . LPAREN definiciones_columnas RPAREN PUNTO_COMA
+
+    LPAREN          shift and go to state 50
+
+
+state 40
+
+    (20) usar_base -> USAR IDENTIFICADOR PUNTO_COMA .
+
+    CREAR           reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+    USAR            reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+    ELIMINAR        reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+    INSERTAR        reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+    BORRAR          reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+    $end            reduce using rule 20 (usar_base -> USAR IDENTIFICADOR PUNTO_COMA .)
+
+
+state 41
+
+    (21) eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 51
+
+
+state 42
+
+    (28) eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 52
+
+
+state 43
+
+    (29) seleccionar -> SELECCIONAR lista_columnas DESDE . IDENTIFICADOR condicion_opt PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 53
+
+
+state 44
+
+    (31) lista_columnas -> lista_columnas COMA . IDENTIFICADOR
+
+    IDENTIFICADOR   shift and go to state 54
+
+
+state 45
+
+    (30) seleccionar -> SELECCIONAR ASTERISCO DESDE . IDENTIFICADOR condicion_opt PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 55
+
+
+state 46
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR . LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+
+    LPAREN          shift and go to state 56
+
+
+state 47
+
+    (41) actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR . asignaciones condicion_opt PUNTO_COMA
+    (42) asignaciones -> . asignaciones COMA asignacion
+    (43) asignaciones -> . asignacion
+    (44) asignacion -> . IDENTIFICADOR IGUAL valor
+
+    IDENTIFICADOR   shift and go to state 57
+
+    asignaciones                   shift and go to state 58
+    asignacion                     shift and go to state 59
+
+state 48
+
+    (45) borrar -> BORRAR DESDE IDENTIFICADOR . condicion_opt PUNTO_COMA
+    (33) condicion_opt -> . DONDE condicion
+    (34) condicion_opt -> . empty
+    (46) empty -> .
+
+    DONDE           shift and go to state 61
+    PUNTO_COMA      reduce using rule 46 (empty -> .)
+
+    condicion_opt                  shift and go to state 60
+    empty                          shift and go to state 62
+
+state 49
+
+    (19) crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .
+
+    CREAR           reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    USAR            reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    ELIMINAR        reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    INSERTAR        reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    BORRAR          reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    $end            reduce using rule 19 (crear_base -> CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+
+
+state 50
+
+    (22) crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN . definiciones_columnas RPAREN PUNTO_COMA
+    (23) definiciones_columnas -> . definiciones_columnas COMA definicion_columna
+    (24) definiciones_columnas -> . definicion_columna
+    (25) definicion_columna -> . IDENTIFICADOR tipo_columna
+
+    IDENTIFICADOR   shift and go to state 63
+
+    definiciones_columnas          shift and go to state 64
+    definicion_columna             shift and go to state 65
+
+state 51
+
+    (21) eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .
+
+    CREAR           reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    USAR            reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    ELIMINAR        reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    INSERTAR        reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    BORRAR          reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+    $end            reduce using rule 21 (eliminar_base -> ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA .)
+
+
+state 52
+
+    (28) eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .
+
+    CREAR           reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+    USAR            reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+    ELIMINAR        reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+    INSERTAR        reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+    BORRAR          reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+    $end            reduce using rule 28 (eliminar_tabla -> ELIMINAR TABLA IDENTIFICADOR PUNTO_COMA .)
+
+
+state 53
+
+    (29) seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR . condicion_opt PUNTO_COMA
+    (33) condicion_opt -> . DONDE condicion
+    (34) condicion_opt -> . empty
+    (46) empty -> .
+
+    DONDE           shift and go to state 61
+    PUNTO_COMA      reduce using rule 46 (empty -> .)
+
+    condicion_opt                  shift and go to state 66
+    empty                          shift and go to state 62
+
+state 54
+
+    (31) lista_columnas -> lista_columnas COMA IDENTIFICADOR .
+
+    DESDE           reduce using rule 31 (lista_columnas -> lista_columnas COMA IDENTIFICADOR .)
+    COMA            reduce using rule 31 (lista_columnas -> lista_columnas COMA IDENTIFICADOR .)
+    RPAREN          reduce using rule 31 (lista_columnas -> lista_columnas COMA IDENTIFICADOR .)
+
+
+state 55
+
+    (30) seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR . condicion_opt PUNTO_COMA
+    (33) condicion_opt -> . DONDE condicion
+    (34) condicion_opt -> . empty
+    (46) empty -> .
+
+    DONDE           shift and go to state 61
+    PUNTO_COMA      reduce using rule 46 (empty -> .)
+
+    condicion_opt                  shift and go to state 67
+    empty                          shift and go to state 62
+
+state 56
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN . lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+    (31) lista_columnas -> . lista_columnas COMA IDENTIFICADOR
+    (32) lista_columnas -> . IDENTIFICADOR
+
+    IDENTIFICADOR   shift and go to state 33
+
+    lista_columnas                 shift and go to state 68
+
+state 57
+
+    (44) asignacion -> IDENTIFICADOR . IGUAL valor
+
+    IGUAL           shift and go to state 69
+
+
+state 58
+
+    (41) actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones . condicion_opt PUNTO_COMA
+    (42) asignaciones -> asignaciones . COMA asignacion
+    (33) condicion_opt -> . DONDE condicion
+    (34) condicion_opt -> . empty
+    (46) empty -> .
+
+    COMA            shift and go to state 71
+    DONDE           shift and go to state 61
+    PUNTO_COMA      reduce using rule 46 (empty -> .)
+
+    condicion_opt                  shift and go to state 70
+    empty                          shift and go to state 62
+
+state 59
+
+    (43) asignaciones -> asignacion .
+
+    COMA            reduce using rule 43 (asignaciones -> asignacion .)
+    DONDE           reduce using rule 43 (asignaciones -> asignacion .)
+    PUNTO_COMA      reduce using rule 43 (asignaciones -> asignacion .)
+
+
+state 60
+
+    (45) borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 72
+
+
+state 61
+
+    (33) condicion_opt -> DONDE . condicion
+    (35) condicion -> . IDENTIFICADOR IGUAL valor
+
+    IDENTIFICADOR   shift and go to state 74
+
+    condicion                      shift and go to state 73
+
+state 62
+
+    (34) condicion_opt -> empty .
+
+    PUNTO_COMA      reduce using rule 34 (condicion_opt -> empty .)
+
+
+state 63
+
+    (25) definicion_columna -> IDENTIFICADOR . tipo_columna
+    (26) tipo_columna -> . IDENTIFICADOR LPAREN NUMERO RPAREN
+    (27) tipo_columna -> . IDENTIFICADOR
+
+    IDENTIFICADOR   shift and go to state 75
+
+    tipo_columna                   shift and go to state 76
+
+state 64
+
+    (22) crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas . RPAREN PUNTO_COMA
+    (23) definiciones_columnas -> definiciones_columnas . COMA definicion_columna
+
+    RPAREN          shift and go to state 77
+    COMA            shift and go to state 78
+
+
+state 65
+
+    (24) definiciones_columnas -> definicion_columna .
+
+    RPAREN          reduce using rule 24 (definiciones_columnas -> definicion_columna .)
+    COMA            reduce using rule 24 (definiciones_columnas -> definicion_columna .)
+
+
+state 66
+
+    (29) seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 79
+
+
+state 67
+
+    (30) seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 80
+
+
+state 68
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas . RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+    (31) lista_columnas -> lista_columnas . COMA IDENTIFICADOR
+
+    RPAREN          shift and go to state 81
+    COMA            shift and go to state 44
+
+
+state 69
+
+    (44) asignacion -> IDENTIFICADOR IGUAL . valor
+    (36) valor -> . NUMERO
+    (37) valor -> . CADENA
+
+    NUMERO          shift and go to state 83
+    CADENA          shift and go to state 84
+
+    valor                          shift and go to state 82
+
+state 70
+
+    (41) actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 85
+
+
+state 71
+
+    (42) asignaciones -> asignaciones COMA . asignacion
+    (44) asignacion -> . IDENTIFICADOR IGUAL valor
+
+    IDENTIFICADOR   shift and go to state 57
+
+    asignacion                     shift and go to state 86
+
+state 72
+
+    (45) borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .
+
+    CREAR           reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    USAR            reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    ELIMINAR        reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    INSERTAR        reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    BORRAR          reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    $end            reduce using rule 45 (borrar -> BORRAR DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+
+
+state 73
+
+    (33) condicion_opt -> DONDE condicion .
+
+    PUNTO_COMA      reduce using rule 33 (condicion_opt -> DONDE condicion .)
+
+
+state 74
+
+    (35) condicion -> IDENTIFICADOR . IGUAL valor
+
+    IGUAL           shift and go to state 87
+
+
+state 75
+
+    (26) tipo_columna -> IDENTIFICADOR . LPAREN NUMERO RPAREN
+    (27) tipo_columna -> IDENTIFICADOR .
+
+    LPAREN          shift and go to state 88
+    RPAREN          reduce using rule 27 (tipo_columna -> IDENTIFICADOR .)
+    COMA            reduce using rule 27 (tipo_columna -> IDENTIFICADOR .)
+
+
+state 76
+
+    (25) definicion_columna -> IDENTIFICADOR tipo_columna .
+
+    RPAREN          reduce using rule 25 (definicion_columna -> IDENTIFICADOR tipo_columna .)
+    COMA            reduce using rule 25 (definicion_columna -> IDENTIFICADOR tipo_columna .)
+
+
+state 77
+
+    (22) crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 89
+
+
+state 78
+
+    (23) definiciones_columnas -> definiciones_columnas COMA . definicion_columna
+    (25) definicion_columna -> . IDENTIFICADOR tipo_columna
+
+    IDENTIFICADOR   shift and go to state 63
+
+    definicion_columna             shift and go to state 90
+
+state 79
+
+    (29) seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .
+
+    CREAR           reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    USAR            reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    ELIMINAR        reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    INSERTAR        reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    BORRAR          reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    $end            reduce using rule 29 (seleccionar -> SELECCIONAR lista_columnas DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+
+
+state 80
+
+    (30) seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .
+
+    CREAR           reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    USAR            reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    ELIMINAR        reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    INSERTAR        reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    BORRAR          reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+    $end            reduce using rule 30 (seleccionar -> SELECCIONAR ASTERISCO DESDE IDENTIFICADOR condicion_opt PUNTO_COMA .)
+
+
+state 81
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN . VALORES LPAREN lista_valores RPAREN PUNTO_COMA
+
+    VALORES         shift and go to state 91
+
+
+state 82
+
+    (44) asignacion -> IDENTIFICADOR IGUAL valor .
+
+    COMA            reduce using rule 44 (asignacion -> IDENTIFICADOR IGUAL valor .)
+    DONDE           reduce using rule 44 (asignacion -> IDENTIFICADOR IGUAL valor .)
+    PUNTO_COMA      reduce using rule 44 (asignacion -> IDENTIFICADOR IGUAL valor .)
+
+
+state 83
+
+    (36) valor -> NUMERO .
+
+    COMA            reduce using rule 36 (valor -> NUMERO .)
+    DONDE           reduce using rule 36 (valor -> NUMERO .)
+    PUNTO_COMA      reduce using rule 36 (valor -> NUMERO .)
+    RPAREN          reduce using rule 36 (valor -> NUMERO .)
+
+
+state 84
+
+    (37) valor -> CADENA .
+
+    COMA            reduce using rule 37 (valor -> CADENA .)
+    DONDE           reduce using rule 37 (valor -> CADENA .)
+    PUNTO_COMA      reduce using rule 37 (valor -> CADENA .)
+    RPAREN          reduce using rule 37 (valor -> CADENA .)
+
+
+state 85
+
+    (41) actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .
+
+    CREAR           reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+    USAR            reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+    ELIMINAR        reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+    INSERTAR        reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+    BORRAR          reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+    $end            reduce using rule 41 (actualizar -> ACTUALIZAR IDENTIFICADOR FIJAR asignaciones condicion_opt PUNTO_COMA .)
+
+
+state 86
+
+    (42) asignaciones -> asignaciones COMA asignacion .
+
+    COMA            reduce using rule 42 (asignaciones -> asignaciones COMA asignacion .)
+    DONDE           reduce using rule 42 (asignaciones -> asignaciones COMA asignacion .)
+    PUNTO_COMA      reduce using rule 42 (asignaciones -> asignaciones COMA asignacion .)
+
+
+state 87
+
+    (35) condicion -> IDENTIFICADOR IGUAL . valor
+    (36) valor -> . NUMERO
+    (37) valor -> . CADENA
+
+    NUMERO          shift and go to state 83
+    CADENA          shift and go to state 84
+
+    valor                          shift and go to state 92
+
+state 88
+
+    (26) tipo_columna -> IDENTIFICADOR LPAREN . NUMERO RPAREN
+
+    NUMERO          shift and go to state 93
+
+
+state 89
+
+    (22) crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .
+
+    CREAR           reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+    USAR            reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+    ELIMINAR        reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+    INSERTAR        reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+    BORRAR          reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+    $end            reduce using rule 22 (crear_tabla -> CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA .)
+
+
+state 90
+
+    (23) definiciones_columnas -> definiciones_columnas COMA definicion_columna .
+
+    RPAREN          reduce using rule 23 (definiciones_columnas -> definiciones_columnas COMA definicion_columna .)
+    COMA            reduce using rule 23 (definiciones_columnas -> definiciones_columnas COMA definicion_columna .)
+
+
+state 91
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES . LPAREN lista_valores RPAREN PUNTO_COMA
+
+    LPAREN          shift and go to state 94
+
+
+state 92
+
+    (35) condicion -> IDENTIFICADOR IGUAL valor .
+
+    PUNTO_COMA      reduce using rule 35 (condicion -> IDENTIFICADOR IGUAL valor .)
+
+
+state 93
+
+    (26) tipo_columna -> IDENTIFICADOR LPAREN NUMERO . RPAREN
+
+    RPAREN          shift and go to state 95
+
+
+state 94
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN . lista_valores RPAREN PUNTO_COMA
+    (39) lista_valores -> . lista_valores COMA valor
+    (40) lista_valores -> . valor
+    (36) valor -> . NUMERO
+    (37) valor -> . CADENA
+
+    NUMERO          shift and go to state 83
+    CADENA          shift and go to state 84
+
+    lista_valores                  shift and go to state 96
+    valor                          shift and go to state 97
+
+state 95
+
+    (26) tipo_columna -> IDENTIFICADOR LPAREN NUMERO RPAREN .
+
+    RPAREN          reduce using rule 26 (tipo_columna -> IDENTIFICADOR LPAREN NUMERO RPAREN .)
+    COMA            reduce using rule 26 (tipo_columna -> IDENTIFICADOR LPAREN NUMERO RPAREN .)
+
+
+state 96
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores . RPAREN PUNTO_COMA
+    (39) lista_valores -> lista_valores . COMA valor
+
+    RPAREN          shift and go to state 98
+    COMA            shift and go to state 99
+
+
+state 97
+
+    (40) lista_valores -> valor .
+
+    RPAREN          reduce using rule 40 (lista_valores -> valor .)
+    COMA            reduce using rule 40 (lista_valores -> valor .)
+
+
+state 98
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 100
+
+
+state 99
+
+    (39) lista_valores -> lista_valores COMA . valor
+    (36) valor -> . NUMERO
+    (37) valor -> . CADENA
+
+    NUMERO          shift and go to state 83
+    CADENA          shift and go to state 84
+
+    valor                          shift and go to state 101
+
+state 100
+
+    (38) insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .
+
+    CREAR           reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+    USAR            reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+    ELIMINAR        reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+    SELECCIONAR     reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+    INSERTAR        reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+    ACTUALIZAR      reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+    BORRAR          reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+    $end            reduce using rule 38 (insertar -> INSERTAR EN IDENTIFICADOR LPAREN lista_columnas RPAREN VALORES LPAREN lista_valores RPAREN PUNTO_COMA .)
+
+
+state 101
+
+    (39) lista_valores -> lista_valores COMA valor .
+
+    RPAREN          reduce using rule 39 (lista_valores -> lista_valores COMA valor .)
+    COMA            reduce using rule 39 (lista_valores -> lista_valores COMA valor .)
+
