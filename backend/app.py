@@ -2,17 +2,18 @@ from lexer import lexer
 from parser import parser
 from semantic import check_semantics, db, execute_queries
 
-# Ejemplo
+# Datos de prueba
 data = '''
 CREAR BASEDEDATOS mi_base;
 USAR mi_base;
 CREAR TABLA usuarios (id INT, nombre VARCHAR(100), edad INT);
-ELIMINAR TABLA usuarios;
-CREAR TABLA usuarios (id INT, nombre VARCHAR(100), edad INT);
-SELECCIONAR * DESDE usuarios DONDE id = 1;
-INSERTAR EN usuarios (nombre, edad) VALORES ("Juan", 25);
+INSERTAR EN usuarios (id, nombre, edad) VALORES (1, "Juan", 25);
+INSERTAR EN usuarios (id, nombre, edad) VALORES (2, "Ana", 30);
+SELECCIONAR * DESDE usuarios;
 ACTUALIZAR usuarios FIJAR edad = 26 DONDE nombre = "Juan";
+SELECCIONAR * DESDE usuarios;
 BORRAR DESDE usuarios DONDE nombre = "Juan";
+SELECCIONAR * DESDE usuarios;
 '''
 
 # Análisis léxico

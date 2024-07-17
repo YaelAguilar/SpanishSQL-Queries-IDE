@@ -1,53 +1,54 @@
+import sqlite3
+
 class Database:
     def __init__(self):
-        self.databases = {}
+        self.connection = sqlite3.connect(':memory:')
+        self.cursor = self.connection.cursor()
         self.current_db = None
 
+    def execute(self, query, params=()):
+        try:
+            self.cursor.execute(query, params)
+            self.connection.commit()
+            return None
+        except sqlite3.Error as e:
+            return str(e)
+
     def create_database(self, name):
-        if name in self.databases:
-            return f"Error: La base de datos '{name}' ya existe."
-        self.databases[name] = {}
+        self.current_db = name
         return None
 
     def use_database(self, name):
-        if name not in self.databases:
-            return f"Error: La base de datos '{name}' no existe."
         self.current_db = name
         return None
 
     def create_table(self, name, columns):
-        if self.current_db is None:
-            return "Error: No se ha seleccionado ninguna base de datos."
-        db = self.databases[self.current_db]
-        if name in db:
-            return f"Error: La tabla '{name}' ya existe en la base de datos '{self.current_db}'."
-        db[name] = {col[0]: col[1] for col in columns}
-        return None
+        columns_def = ', '.join(f"{col[0]} {col[1][0]}({col[1][1]})" if len(col[1]) > 1 else f"{col[0]} {col[1][0]}" for col in columns)
+        query = f"CREATE TABLE {name} ({columns_def})"
+        return self.execute(query)
 
     def drop_table(self, name):
-        if self.current_db is None:
-            return "Error: No se ha seleccionado ninguna base de datos."
-        db = self.databases[self.current_db]
-        if name not in db:
-            return f"Error: La tabla '{name}' no existe en la base de datos '{self.current_db}'."
-        del db[name]
-        return None
+        query = f"DROP TABLE IF EXISTS {name}"
+        return self.execute(query)
 
     def table_exists(self, name):
-        if self.current_db is None:
-            return False
-        return name in self.databases[self.current_db]
+        query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
+        self.cursor.execute(query, (name,))
+        return self.cursor.fetchone() is not None
 
     def column_exists(self, table, column):
-        if self.current_db is None:
-            return False
-        return column in self.databases[self.current_db].get(table, {})
+        query = f"PRAGMA table_info({table})"
+        self.cursor.execute(query)
+        columns = [info[1] for info in self.cursor.fetchall()]
+        return column in columns
 
     def get_column_type(self, table, column):
-        if self.current_db is None:
-            return None
-        return self.databases[self.current_db].get(table, {}).get(column, None)
-
+        query = f"PRAGMA table_info({table})"
+        self.cursor.execute(query)
+        for info in self.cursor.fetchall():
+            if info[1] == column:
+                return info[2]
+        return None
 
 db = Database()
 
@@ -129,13 +130,30 @@ def execute_queries(commands):
             db.drop_table(command[1])
         elif command[0] == 'seleccionar':
             print(f"Seleccionando {command[1]} desde '{command[2]}' donde {command[3]}...")
-            # Aquí puedes implementar la lógica para seleccionar datos
+            if command[1] == '*':
+                query = f"SELECT * FROM {command[2]}"
+            else:
+                query = f"SELECT {', '.join(command[1])} FROM {command[2]}"
+            if command[3]:
+                query += f" WHERE {command[3][0]} = ?"
+                params = (command[3][2],)
+            else:
+                params = ()
+            db.cursor.execute(query, params)
+            for row in db.cursor.fetchall():
+                print(row)
         elif command[0] == 'insertar':
             print(f"Insertando en '{command[1]}' columnas {command[2]} valores {command[3]}...")
-            # Aquí puedes implementar la lógica para insertar datos
+            placeholders = ', '.join(['?'] * len(command[3]))
+            query = f"INSERT INTO {command[1]} ({', '.join(command[2])}) VALUES ({placeholders})"
+            db.execute(query, command[3])
         elif command[0] == 'actualizar':
             print(f"Actualizando '{command[1]}' fijar {command[2]} donde {command[3]}...")
-            # Aquí puedes implementar la lógica para actualizar datos
+            assignments = ', '.join([f"{col} = ?" for col, _, _ in command[2]])
+            query = f"UPDATE {command[1]} SET {assignments} WHERE {command[3][0]} = ?"
+            params = [val for _, _, val in command[2]] + [command[3][2]]
+            db.execute(query, params)
         elif command[0] == 'borrar':
             print(f"Borrando desde '{command[1]}' donde {command[2]}...")
-            # Aquí puedes implementar la lógica para borrar datos
+            query = f"DELETE FROM {command[1]} WHERE {command[2][0]} = ?"
+            db.execute(query, (command[2][2],))
