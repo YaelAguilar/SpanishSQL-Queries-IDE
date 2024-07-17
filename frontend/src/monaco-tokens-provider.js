@@ -1,6 +1,22 @@
 const keywords = [
-    'SELECCIONAR', 'DESDE', 'DONDE', 'INSERTAR', 'ACTUALIZAR', 'BORRAR',
-    'EN', 'VALORES', 'FIJAR', 'Y', 'O'
+    'SELECCIONAR',
+    'DESDE',
+    'DONDE',
+    'INSERTAR',
+    'ACTUALIZAR',
+    'BORRAR',
+    'EN',
+    'VALORES',
+    'FIJAR',
+    'Y',
+    'O',
+    'CREAR',
+    'BASEDEDATOS',
+    'TABLA',
+    'ELIMINAR',
+    'USAR',
+    'VARCHAR',
+    'INT'
   ];
   
   const createTokenProvider = (monaco) => {

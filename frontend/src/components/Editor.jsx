@@ -1,10 +1,38 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import MonacoEditor from '@monaco-editor/react';
 import lexer from '../lexer';
 import createTokenProvider from '../monaco-tokens-provider';
 
 const Editor = ({ fileName, onTokensUpdate }) => {
+  const [query, setQuery] = useState('');
+
+  const runQuery = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/run_query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Errors:', data.semantic_errors);
+      }
+
+      console.log('Tokens:', data.tokens);
+      console.log('Parse Tree:', data.parse_tree);
+      console.log('Semantic Errors:', data.semantic_errors);
+    } catch (error) {
+      console.error('Error running query:', error);
+    }
+  };
+
   const handleEditorChange = (value) => {
+    setQuery(value);
     lexer.reset(value);
     let tokenList = [];
     let token;
@@ -38,7 +66,7 @@ const Editor = ({ fileName, onTokensUpdate }) => {
     <section className="flex-1 p-4 bg-black">
       <h2 className="text-white text-xl mb-4">{fileName}</h2>
       <MonacoEditor
-        height="90%"
+        height="80%"
         theme="customDarkTheme"
         defaultLanguage="sql"
         defaultValue={`-- Your SQL code here...`}
@@ -49,6 +77,12 @@ const Editor = ({ fileName, onTokensUpdate }) => {
         onChange={handleEditorChange}
         beforeMount={handleEditorWillMount}
       />
+      <button
+        onClick={runQuery}
+        className="mt-4 p-2 bg-green-500 text-white rounded"
+      >
+        Run Query
+      </button>
     </section>
   );
 };

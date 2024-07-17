@@ -1,47 +1,46 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from lexer import lexer
 from parser import parser
-from semantic import check_semantics, execute_queries, db
+from semantic import check_semantics, execute_queries
 
-# Test
-data = '''
-CREAR BASEDEDATOS mi_base;
-USAR mi_base;
-CREAR TABLA usuarios (id INT, nombre VARCHAR(100), edad INT);
-ELIMINAR TABLA usuarios;
-CREAR TABLA usuarios (id INT, nombre VARCHAR(100), edad INT);
-SELECCIONAR * DESDE usuarios DONDE id = 1;
-INSERTAR EN usuarios (nombre, edad) VALORES ("Juan", 25);
-INSERTAR EN usuarios (nombre, edad) VALORES ("Yael", 21);
-INSERTAR EN usuarios (nombre, edad) VALORES ("Ana", 22);
-INSERTAR EN usuarios (nombre, edad) VALORES ("Luis", 30);
-ACTUALIZAR usuarios FIJAR edad = 26 DONDE nombre = "Juan";
-BORRAR DESDE usuarios DONDE nombre = "Juan";
-'''
+app = Flask(__name__)
+CORS(app)  # Habilitar CORS
 
-# Análisis léxico
-lexer.input(data)
-print("Análisis Léxico")
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+@app.route('/run_query', methods=['POST'])
+def run_query():
+    data = request.json.get('query')
+    
+    # Análisis léxico
+    lexer.input(data)
+    tokens = []
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        tokens.append(str(tok))
+    
+    # Análisis sintáctico
+    result = parser.parse(data)
+    
+    # Análisis semántico
+    errors = check_semantics(result)
+    
+    # Ejecución de consultas si no hay errores semánticos
+    if not errors:
+        execute_queries(result)
+    
+    # Respuesta con todos los resultados
+    response = {
+        'tokens': tokens,
+        'parse_tree': result,
+        'semantic_errors': errors
+    }
+    
+    if errors:
+        return jsonify(response), 400
+    
+    return jsonify(response)
 
-print("\nAnálisis Sintáctico\n")
-
-# Análisis sintáctico
-result = parser.parse(data)
-print(result)
-
-print("\nAnálisis Semántico\n")
-
-# Análisis semántico
-errors = check_semantics(result)
-if errors:
-    print("Errores semánticos:")
-    for error in errors:
-        print(error)
-else:
-    print("No se encontraron errores semánticos.")
-    print("\nEjecución de Consultas\n")
-    execute_queries(result)
+if __name__ == '__main__':
+    app.run(debug=True)
