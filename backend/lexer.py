@@ -14,8 +14,7 @@ tokens = (
     'Y',
     'O',
     'CREAR',
-    'BASE',
-    'DATOS',
+    'BASEDEDATOS',
     'TABLA',
     'ELIMINAR',
     'USAR',
@@ -35,6 +34,7 @@ tokens = (
     'COMA'
 )
 
+# Regular expressions for tokens
 t_IGUAL = r'='
 t_MENOR = r'<'
 t_MAYOR = r'>'
@@ -95,12 +95,8 @@ def t_CREAR(t):
     r'CREAR'
     return t
 
-def t_BASE(t):
-    r'BASE'
-    return t
-
-def t_DATOS(t):
-    r'DATOS'
+def t_BASEDEDATOS(t):
+    r'BASEDEDATOS'
     return t
 
 def t_TABLA(t):

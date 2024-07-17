@@ -27,16 +27,16 @@ def p_query(p):
         p[0] = [p[1]]
 
 def p_crear_base(p):
-    'crear_base : CREAR BASE DATOS IDENTIFICADOR PUNTO_COMA'
-    p[0] = ('crear_base', p[4])
+    'crear_base : CREAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA'
+    p[0] = ('crear_base', p[3])
 
 def p_usar_base(p):
     'usar_base : USAR IDENTIFICADOR PUNTO_COMA'
     p[0] = ('usar_base', p[2])
 
 def p_eliminar_base(p):
-    'eliminar_base : ELIMINAR BASE DATOS IDENTIFICADOR PUNTO_COMA'
-    p[0] = ('eliminar_base', p[4])
+    'eliminar_base : ELIMINAR BASEDEDATOS IDENTIFICADOR PUNTO_COMA'
+    p[0] = ('eliminar_base', p[3])
 
 def p_crear_tabla(p):
     'crear_tabla : CREAR TABLA IDENTIFICADOR LPAREN definiciones_columnas RPAREN PUNTO_COMA'
