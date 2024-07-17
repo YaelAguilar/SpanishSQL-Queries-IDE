@@ -24,13 +24,13 @@ const keywords = [
       base: 'vs-dark',
       inherit: true,
       rules: [
-        { token: 'keyword', foreground: '00ff00' }, // Phosphorescent green
+        { token: 'keyword', foreground: '00ff00' }, // Green
         { token: 'identifier', foreground: 'ffffff' }, // White
-        { token: 'string', foreground: 'ce9178' }, // Orange
-        { token: 'number', foreground: 'CB02FD' }, // Intense purple
+        { token: 'string', foreground: 'ce9178' }, // Light Red
+        { token: 'number', foreground: 'CB02FD' }, // Purple
         { token: 'operator', foreground: '87cefa' }, // Light Blue
         { token: 'delimiter', foreground: '87cefa' }, // Light Blue
-        { token: 'whitespace', foreground: 'd4d4d4' }, // Light Gray
+        { token: 'whitespace', foreground: 'd4d4d4' }, // Gray
       ],
       colors: {
         'editor.background': '#000000', // Black background

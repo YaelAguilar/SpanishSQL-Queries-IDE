@@ -25,7 +25,7 @@ const App = () => {
         {activeFile ? (
           <Editor fileName={activeFile} onTokensUpdate={handleTokensUpdate} />
         ) : (
-          <WelcomeScreen />
+          <WelcomeScreen textColor="#00ff00" backgroundColor="#000000" />
         )}
       </div>
       <Footer tokens={tokens} className="flex-grow" />
