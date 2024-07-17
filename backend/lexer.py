@@ -34,7 +34,7 @@ tokens = (
     'COMA'
 )
 
-# Regular expressions for tokens
+# Regex
 t_IGUAL = r'='
 t_MENOR = r'<'
 t_MAYOR = r'>'

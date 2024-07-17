@@ -1,26 +1,52 @@
-import sqlite3
+import mysql.connector
+from mysql.connector import errorcode
 
 class Database:
-    def __init__(self, db_name='mi_base.db'):
-        self.connection = sqlite3.connect(db_name)
+    def __init__(self, user, password, host, database=None):
+        self.connection = mysql.connector.connect(
+            user=user,
+            password=password,
+            host=host
+        )
         self.cursor = self.connection.cursor()
-        self.current_db = None
+        self.current_db = database
+
+        # Intentar seleccionar la base de datos, si falla, crearla
+        if database:
+            try:
+                self.use_database(database)
+            except mysql.connector.Error as err:
+                if err.errno == errorcode.ER_BAD_DB_ERROR:
+                    print(f"Base de datos '{database}' no existe. Creándola...")
+                    self.create_database(database)
+                    self.use_database(database)
+                else:
+                    raise err
 
     def execute(self, query, params=()):
         try:
             self.cursor.execute(query, params)
             self.connection.commit()
             return None
-        except sqlite3.Error as e:
-            return str(e)
+        except mysql.connector.Error as err:
+            return str(err)
 
     def create_database(self, name):
-        self.current_db = name
-        return None
+        try:
+            self.cursor.execute(f"CREATE DATABASE {name}")
+            self.connection.database = name
+            self.current_db = name
+            return None
+        except mysql.connector.Error as err:
+            return str(err)
 
     def use_database(self, name):
-        self.current_db = name
-        return None
+        try:
+            self.connection.database = name
+            self.current_db = name
+            return None
+        except mysql.connector.Error as err:
+            return str(err)
 
     def create_table(self, name, columns):
         columns_def = ', '.join(f"{col[0]} {col[1][0]}({col[1][1]})" if len(col[1]) > 1 else f"{col[0]} {col[1][0]}" for col in columns)
@@ -32,25 +58,24 @@ class Database:
         return self.execute(query)
 
     def table_exists(self, name):
-        query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
+        query = "SHOW TABLES LIKE %s"
         self.cursor.execute(query, (name,))
         return self.cursor.fetchone() is not None
 
     def column_exists(self, table, column):
-        query = f"PRAGMA table_info({table})"
-        self.cursor.execute(query)
-        columns = [info[1] for info in self.cursor.fetchall()]
-        return column in columns
+        query = f"SHOW COLUMNS FROM {table} LIKE %s"
+        self.cursor.execute(query, (column,))
+        return self.cursor.fetchone() is not None
 
     def get_column_type(self, table, column):
-        query = f"PRAGMA table_info({table})"
-        self.cursor.execute(query)
-        for info in self.cursor.fetchall():
-            if info[1] == column:
-                return info[2]
+        query = f"SHOW COLUMNS FROM {table} LIKE %s"
+        self.cursor.execute(query, (column,))
+        result = self.cursor.fetchone()
+        if result:
+            return result[1]  # El tipo está en la segunda columna del resultado
         return None
 
-db = Database()
+db = Database(user='root', password='new_password', host='localhost', database='mi_base')
 
 def check_semantics(commands):
     errors = []
@@ -88,9 +113,10 @@ def check_semantics(commands):
                 errors.append(f"Error: La tabla '{table}' no existe.")
             else:
                 for col, val in zip(command[2], command[3]):
+                    column_type = db.get_column_type(table, col)
                     if not db.column_exists(table, col):
                         errors.append(f"Error: La columna '{col}' no existe en la tabla '{table}'.")
-                    elif not isinstance(val, int) and db.get_column_type(table, col) == 'INT':
+                    elif not isinstance(val, int) and column_type and isinstance(column_type, str) and column_type.startswith('INT'):
                         errors.append(f"Error: Tipo de dato incorrecto para la columna '{col}'. Se esperaba 'INT'.")
         elif command[0] == 'actualizar':
             table = command[1]
@@ -98,9 +124,10 @@ def check_semantics(commands):
                 errors.append(f"Error: La tabla '{table}' no existe.")
             else:
                 for col, op, val in command[2]:
+                    column_type = db.get_column_type(table, col)
                     if not db.column_exists(table, col):
                         errors.append(f"Error: La columna '{col}' no existe en la tabla '{table}'.")
-                    elif not isinstance(val, int) and db.get_column_type(table, col) == 'INT':
+                    elif not isinstance(val, int) and column_type and isinstance(column_type, str) and column_type.startswith('INT'):
                         errors.append(f"Error: Tipo de dato incorrecto para la columna '{col}'. Se esperaba 'INT'.")
                 if not db.column_exists(table, command[3][0]):
                     errors.append(f"Error: La columna '{command[3][0]}' no existe en la tabla '{table}'.")
@@ -135,7 +162,7 @@ def execute_queries(commands):
             else:
                 query = f"SELECT {', '.join(command[1])} FROM {command[2]}"
             if command[3]:
-                query += f" WHERE {command[3][0]} = ?"
+                query += f" WHERE {command[3][0]} = %s"
                 params = (command[3][2],)
             else:
                 params = ()
@@ -144,16 +171,18 @@ def execute_queries(commands):
                 print(row)
         elif command[0] == 'insertar':
             print(f"Insertando en '{command[1]}' columnas {command[2]} valores {command[3]}...")
-            placeholders = ', '.join(['?'] * len(command[3]))
+            placeholders = ', '.join(['%s'] * len(command[3]))
             query = f"INSERT INTO {command[1]} ({', '.join(command[2])}) VALUES ({placeholders})"
             db.execute(query, command[3])
         elif command[0] == 'actualizar':
             print(f"Actualizando '{command[1]}' fijar {command[2]} donde {command[3]}...")
-            assignments = ', '.join([f"{col} = ?" for col, _, _ in command[2]])
-            query = f"UPDATE {command[1]} SET {assignments} WHERE {command[3][0]} = ?"
+            assignments = ', '.join([f"{col} = %s" for col, _, _ in command[2]])
+            query = f"UPDATE {command[1]} SET {assignments} WHERE {command[3][0]} = %s"
             params = [val for _, _, val in command[2]] + [command[3][2]]
             db.execute(query, params)
         elif command[0] == 'borrar':
             print(f"Borrando desde '{command[1]}' donde {command[2]}...")
-            query = f"DELETE FROM {command[1]} WHERE {command[2][0]} = ?"
+            query = f"DELETE FROM {command[1]} WHERE {command[2][0]} = %s"
             db.execute(query, (command[2][2],))
+
+db = Database(user='root', password='new_password', host='localhost', database='mi_base')
