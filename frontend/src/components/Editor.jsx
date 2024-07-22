@@ -79,7 +79,7 @@ const Editor = ({ fileName, onTokensUpdate }) => {
       />
       <button
         onClick={runQuery}
-        className="mt-4 p-2 bg-green-500 text-white rounded"
+        className="mt-4 p-2 bg-green-500 text-white rounded hover:bg-green-700"
       >
         Run Query
       </button>

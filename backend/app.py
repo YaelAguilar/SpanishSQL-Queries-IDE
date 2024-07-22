@@ -5,7 +5,7 @@ from parser import parser
 from semantic import check_semantics, execute_queries
 
 app = Flask(__name__)
-CORS(app)  # Habilitar CORS
+CORS(app)
 
 @app.route('/run_query', methods=['POST'])
 def run_query():
@@ -26,7 +26,6 @@ def run_query():
     # Análisis semántico
     errors = check_semantics(result)
     
-    # Ejecución de consultas si no hay errores semánticos
     if not errors:
         execute_queries(result)
     
