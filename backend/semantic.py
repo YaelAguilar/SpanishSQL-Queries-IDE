@@ -40,6 +40,16 @@ class Database:
         except mysql.connector.Error as err:
             return str(err)
 
+    def drop_database(self, name):
+        try:
+            self.cursor.execute(f"DROP DATABASE {name}")
+            self.connection.commit()
+            if self.current_db == name:
+                self.current_db = None
+            return None
+        except mysql.connector.Error as err:
+            return str(err)
+
     def use_database(self, name):
         try:
             self.connection.database = name
@@ -86,6 +96,10 @@ def check_semantics(commands):
                 errors.append(error)
         elif command[0] == 'usar_base':
             error = db.use_database(command[1])
+            if error:
+                errors.append(error)
+        elif command[0] == 'eliminar_base':
+            error = db.drop_database(command[1])
             if error:
                 errors.append(error)
         elif command[0] == 'crear_tabla':
@@ -149,6 +163,9 @@ def execute_queries(commands):
         elif command[0] == 'usar_base':
             print(f"Usando base de datos '{command[1]}'...")
             db.use_database(command[1])
+        elif command[0] == 'eliminar_base':
+            print(f"Eliminando base de datos '{command[1]}'...")
+            db.drop_database(command[1])
         elif command[0] == 'crear_tabla':
             print(f"Creando tabla '{command[1]}' con columnas {command[2]}...")
             db.create_table(command[1], command[2])

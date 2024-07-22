@@ -29,17 +29,52 @@ def run_query():
     if not errors:
         execute_queries(result)
     
-    # Respuesta con todos los resultados
+    # Formatear la respuesta para una mejor legibilidad
     response = {
-        'tokens': tokens,
-        'parse_tree': result,
-        'semantic_errors': errors
+        'Lexical Analysis': tokens,
+        'Syntactic Analysis (Parse Tree)': result,
+        'Semantic Errors': errors
     }
+
+    formatted_response = format_response(response)
     
-    if errors:
-        return jsonify(response), 400
+    return jsonify(formatted_response)
+
+def format_response(response):
+    formatted = {}
     
-    return jsonify(response)
+    # Formatear el análisis léxico
+    formatted['Lexical Analysis'] = "\n".join(response['Lexical Analysis'])
+    
+    # Formatear el análisis sintáctico
+    formatted['Syntactic Analysis (Parse Tree)'] = format_parse_tree(response['Syntactic Analysis (Parse Tree)'])
+    
+    # Formatear los errores semánticos
+    if response['Semantic Errors']:
+        formatted['Semantic Errors'] = "\n".join(response['Semantic Errors'])
+    else:
+        formatted['Semantic Errors'] = "No semantic errors."
+    
+    return formatted
+
+def format_parse_tree(parse_tree):
+    if parse_tree is None:
+        return "No parse tree."
+    
+    def format_node(node, level=0):
+        if isinstance(node, tuple):
+            formatted = "\t" * level + str(node[0]) + "\n"
+            for child in node[1:]:
+                formatted += format_node(child, level + 1)
+        elif isinstance(node, list):
+            formatted = ""
+            for child in node:
+                formatted += format_node(child, level)
+        else:
+            formatted = "\t" * level + str(node) + "\n"
+        return formatted
+    
+    return format_node(parse_tree)
 
 if __name__ == '__main__':
     app.run(debug=True)
