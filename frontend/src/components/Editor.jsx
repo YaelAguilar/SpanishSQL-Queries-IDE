@@ -4,7 +4,7 @@ import MonacoEditor from '@monaco-editor/react';
 import lexer from '../lexer';
 import createTokenProvider from '../monaco-tokens-provider';
 
-const Editor = ({ fileName, onLogUpdate }) => {
+const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate }) => {
   const [query, setQuery] = useState('');
 
   const runQuery = async () => {
@@ -30,6 +30,9 @@ const Editor = ({ fileName, onLogUpdate }) => {
 
       // Actualizar los logs en el componente Footer
       onLogUpdate(data['Log'].split('\n'));
+
+      // Enviar los resultados del análisis al componente App
+      onAnalysisUpdate(data['Lexical Analysis'], data['Syntactic Analysis (Parse Tree)'], data['Semantic Errors']);
     } catch (error) {
       console.error('Error running query:', error);
       onLogUpdate([`Error: ${error.message}`]);
@@ -89,6 +92,7 @@ const Editor = ({ fileName, onLogUpdate }) => {
 Editor.propTypes = {
   fileName: PropTypes.string.isRequired,
   onLogUpdate: PropTypes.func.isRequired,
+  onAnalysisUpdate: PropTypes.func.isRequired,
 };
 
 export default Editor;

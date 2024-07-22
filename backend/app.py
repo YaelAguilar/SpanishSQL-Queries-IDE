@@ -28,6 +28,14 @@ def run_query():
     # Análisis sintáctico
     result = parser.parse(data)
     
+    if result is None:
+        return jsonify({
+            'Lexical Analysis': "\n".join(tokens),
+            'Syntactic Analysis (Parse Tree)': "Error de sintaxis.",
+            'Semantic Errors': "No se realizó el análisis semántico debido a errores sintácticos.",
+            'Log': []
+        }), 400
+    
     # Análisis semántico
     errors = check_semantics(result)
     
