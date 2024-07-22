@@ -4,7 +4,7 @@ import MonacoEditor from '@monaco-editor/react';
 import lexer from '../lexer';
 import createTokenProvider from '../monaco-tokens-provider';
 
-const Editor = ({ fileName, onTokensUpdate }) => {
+const Editor = ({ fileName, onLogUpdate }) => {
   const [query, setQuery] = useState('');
 
   const runQuery = async () => {
@@ -20,26 +20,25 @@ const Editor = ({ fileName, onTokensUpdate }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        console.error('Errors:', data.semantic_errors);
+        console.error('Errors:', data['Semantic Errors']);
       }
 
-      console.log('Tokens:', data.tokens);
-      console.log('Parse Tree:', data.parse_tree);
-      console.log('Semantic Errors:', data.semantic_errors);
+      console.log('Tokens:', data['Lexical Analysis']);
+      console.log('Parse Tree:', data['Syntactic Analysis (Parse Tree)']);
+      console.log('Semantic Errors:', data['Semantic Errors']);
+      console.log('Log:', data['Log']);
+
+      // Actualizar los logs en el componente Footer
+      onLogUpdate(data['Log'].split('\n'));
     } catch (error) {
       console.error('Error running query:', error);
+      onLogUpdate([`Error: ${error.message}`]);
     }
   };
 
   const handleEditorChange = (value) => {
     setQuery(value);
     lexer.reset(value);
-    let tokenList = [];
-    let token;
-    while ((token = lexer.next())) {
-      tokenList.push(token);
-    }
-    onTokensUpdate(tokenList);
   };
 
   const handleEditorWillMount = (monaco) => {
@@ -89,7 +88,7 @@ const Editor = ({ fileName, onTokensUpdate }) => {
 
 Editor.propTypes = {
   fileName: PropTypes.string.isRequired,
-  onTokensUpdate: PropTypes.func.isRequired,
+  onLogUpdate: PropTypes.func.isRequired,
 };
 
 export default Editor;

@@ -7,14 +7,14 @@ import WelcomeScreen from './components/WelcomeScreen';
 
 const App = () => {
   const [activeFile, setActiveFile] = useState(null);
-  const [tokens, setTokens] = useState([]);
+  const [logs, setLogs] = useState([]);
 
   const handleFileOpen = (fileName) => {
     setActiveFile(fileName);
   };
 
-  const handleTokensUpdate = (newTokens) => {
-    setTokens(newTokens);
+  const handleLogUpdate = (newLogs) => {
+    setLogs(Array.isArray(newLogs) ? newLogs : []);
   };
 
   return (
@@ -23,12 +23,15 @@ const App = () => {
       <div className="flex flex-1">
         <Sidebar onFileOpen={handleFileOpen} />
         {activeFile ? (
-          <Editor fileName={activeFile} onTokensUpdate={handleTokensUpdate} />
+          <Editor
+            fileName={activeFile}
+            onLogUpdate={handleLogUpdate}
+          />
         ) : (
           <WelcomeScreen textColor="#00ff00" backgroundColor="#000000" />
         )}
       </div>
-      <Footer tokens={tokens} className="flex-grow" />
+      <Footer logs={logs} className="flex-grow" />
     </div>
   );
 };

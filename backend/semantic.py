@@ -1,5 +1,19 @@
 import mysql.connector
 from mysql.connector import errorcode
+import logging
+from io import StringIO
+
+# Configurar el logging
+log_stream = StringIO()
+logger = logging.getLogger()
+
+# Remover todos los handlers existentes
+for handler in logger.handlers[:]:
+    logger.removeHandler(handler)
+
+stream_handler = logging.StreamHandler(log_stream)
+logger.addHandler(stream_handler)
+logger.setLevel(logging.INFO)
 
 class Database:
     def __init__(self, user, password, host, database=None):
@@ -11,13 +25,12 @@ class Database:
         self.cursor = self.connection.cursor()
         self.current_db = database
 
-        # Intentar seleccionar la base de datos, si falla, crearla
         if database:
             try:
                 self.use_database(database)
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_BAD_DB_ERROR:
-                    print(f"Base de datos '{database}' no existe. Creándola...")
+                    logging.info(f"Base de datos '{database}' no existe. Creándola...")
                     self.create_database(database)
                     self.use_database(database)
                 else:
@@ -36,6 +49,7 @@ class Database:
             self.cursor.execute(f"CREATE DATABASE {name}")
             self.connection.database = name
             self.current_db = name
+            logging.info(f"Base de datos '{name}' creada.")
             return None
         except mysql.connector.Error as err:
             return str(err)
@@ -46,6 +60,7 @@ class Database:
             self.connection.commit()
             if self.current_db == name:
                 self.current_db = None
+            logging.info(f"Base de datos '{name}' eliminada.")
             return None
         except mysql.connector.Error as err:
             return str(err)
@@ -54,6 +69,7 @@ class Database:
         try:
             self.connection.database = name
             self.current_db = name
+            #logging.info(f"Usando base de datos '{name}'...")
             return None
         except mysql.connector.Error as err:
             return str(err)
@@ -61,10 +77,12 @@ class Database:
     def create_table(self, name, columns):
         columns_def = ', '.join(f"{col[0]} {col[1][0]}({col[1][1]})" if len(col[1]) > 1 else f"{col[0]} {col[1][0]}" for col in columns)
         query = f"CREATE TABLE {name} ({columns_def})"
+        #logging.info(f"Creando tabla '{name}' con columnas {columns}.")
         return self.execute(query)
 
     def drop_table(self, name):
         query = f"DROP TABLE IF EXISTS {name}"
+        #logging.info(f"Tabla '{name}' eliminada.")
         return self.execute(query)
 
     def table_exists(self, name):
@@ -82,7 +100,7 @@ class Database:
         self.cursor.execute(query, (column,))
         result = self.cursor.fetchone()
         if result:
-            return result[1]  # El tipo está en la segunda columna del resultado
+            return result[1]
         return None
 
 db = Database(user='root', password='new_password', host='localhost', database='mi_base')
@@ -158,22 +176,22 @@ def check_semantics(commands):
 def execute_queries(commands):
     for command in commands:
         if command[0] == 'crear_base':
-            print(f"Creando base de datos '{command[1]}'...")
+            #logging.info(f"Creando base de datos '{command[1]}'...")
             db.create_database(command[1])
         elif command[0] == 'usar_base':
-            print(f"Usando base de datos '{command[1]}'...")
+            logging.info(f"Usando base de datos '{command[1]}'...")
             db.use_database(command[1])
         elif command[0] == 'eliminar_base':
-            print(f"Eliminando base de datos '{command[1]}'...")
+            #logging.info(f"Eliminando base de datos '{command[1]}'...")
             db.drop_database(command[1])
         elif command[0] == 'crear_tabla':
-            print(f"Creando tabla '{command[1]}' con columnas {command[2]}...")
+            logging.info(f"Creando tabla '{command[1]}' con columnas {command[2]}...")
             db.create_table(command[1], command[2])
         elif command[0] == 'eliminar_tabla':
-            print(f"Eliminando tabla '{command[1]}'...")
+            logging.info(f"Tabla '{command[1]}' Eliminada")
             db.drop_table(command[1])
         elif command[0] == 'seleccionar':
-            print(f"Seleccionando {command[1]} desde '{command[2]}' donde {command[3]}...")
+            #logging.info(f"Seleccionando {command[1]} desde '{command[2]}' donde {command[3]}...")
             if command[1] == '*':
                 query = f"SELECT * FROM {command[2]}"
             else:
@@ -185,20 +203,20 @@ def execute_queries(commands):
                 params = ()
             db.cursor.execute(query, params)
             for row in db.cursor.fetchall():
-                print(row)
+                logging.info(row)
         elif command[0] == 'insertar':
-            print(f"Insertando en '{command[1]}' columnas {command[2]} valores {command[3]}...")
+            logging.info(f"Insertando en '{command[1]}' columnas {command[2]} valores {command[3]}...")
             placeholders = ', '.join(['%s'] * len(command[3]))
             query = f"INSERT INTO {command[1]} ({', '.join(command[2])}) VALUES ({placeholders})"
             db.execute(query, command[3])
         elif command[0] == 'actualizar':
-            print(f"Actualizando '{command[1]}' fijar {command[2]} donde {command[3]}...")
+            logging.info(f"Actualizando '{command[1]}' fijar {command[2]} donde {command[3]}...")
             assignments = ', '.join([f"{col} = %s" for col, _, _ in command[2]])
             query = f"UPDATE {command[1]} SET {assignments} WHERE {command[3][0]} = %s"
             params = [val for _, _, val in command[2]] + [command[3][2]]
             db.execute(query, params)
         elif command[0] == 'borrar':
-            print(f"Borrando desde '{command[1]}' donde {command[2]}...")
+            logging.info(f"Borrando desde '{command[1]}' donde {command[2]}...")
             query = f"DELETE FROM {command[1]} WHERE {command[2][0]} = %s"
             db.execute(query, (command[2][2],))
 
