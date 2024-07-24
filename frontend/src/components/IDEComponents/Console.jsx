@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const Footer = ({ logs = [], className }) => {
+const Console = ({ logs = [], className }) => {
   return (
     <footer className={`bg-[#13002B] p-4 ${className} flex flex-col min-h-40`}>
       <div className="flex space-x-4">
@@ -21,9 +21,9 @@ const Footer = ({ logs = [], className }) => {
   );
 };
 
-Footer.propTypes = {
+Console.propTypes = {
   logs: PropTypes.array,
   className: PropTypes.string,
 };
 
-export default Footer;
+export default Console;

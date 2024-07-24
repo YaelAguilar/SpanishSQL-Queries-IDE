@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import MonacoEditor from '@monaco-editor/react';
-import lexer from '../lexer';
-import createTokenProvider from '../monaco-tokens-provider';
+import lexer from '../../lexer';
+import createTokenProvider from '../../monaco-tokens-provider';
 
 const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate }) => {
   const [query, setQuery] = useState('');
@@ -28,10 +28,8 @@ const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate }) => {
       console.log('Semantic Errors:', data['Semantic Errors']);
       console.log('Log:', data['Log']);
 
-      // Actualizar los logs en el componente Footer
       onLogUpdate(data['Log'].split('\n'));
 
-      // Enviar los resultados del análisis al componente App
       onAnalysisUpdate(data['Lexical Analysis'], data['Syntactic Analysis (Parse Tree)'], data['Semantic Errors']);
     } catch (error) {
       console.error('Error running query:', error);
