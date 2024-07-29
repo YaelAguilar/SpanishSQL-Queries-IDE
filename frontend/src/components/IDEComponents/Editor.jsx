@@ -4,7 +4,7 @@ import MonacoEditor from '@monaco-editor/react';
 import lexer from '../../lexer';
 import createTokenProvider from '../../monaco-tokens-provider';
 
-const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate }) => {
+const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate, dbCredentials }) => {
   const [query, setQuery] = useState('');
 
   const runQuery = async () => {
@@ -14,7 +14,7 @@ const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, dbCredentials }),
       });
 
       const data = await response.json();
@@ -91,6 +91,7 @@ Editor.propTypes = {
   fileName: PropTypes.string.isRequired,
   onLogUpdate: PropTypes.func.isRequired,
   onAnalysisUpdate: PropTypes.func.isRequired,
+  dbCredentials: PropTypes.object.isRequired,
 };
 
 export default Editor;

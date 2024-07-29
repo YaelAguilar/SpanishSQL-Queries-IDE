@@ -1,10 +1,14 @@
 import IDEContainer from "../containers/IDEContainer";
+import PropTypes from 'prop-types';
 
-const IDEPage = () => {
-
+const IDEPage = ({ dbCredentials }) => {
   return (
-    <IDEContainer />
+    <IDEContainer dbCredentials={dbCredentials} />
   );
 }
+
+IDEPage.propTypes = {
+  dbCredentials: PropTypes.object.isRequired,
+};
 
 export default IDEPage;

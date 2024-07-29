@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import Header from '../components/IDEComponents/Header';
 import Sidebar from '../components/IDEComponents/Sidebar';
 import Editor from '../components/IDEComponents/Editor';
@@ -6,7 +7,7 @@ import Console from '../components/IDEComponents/Console';
 import WelcomeScreen from '../components/IDEComponents/WelcomeScreen';
 import AnalysisViewer from '../components/IDEComponents/AnalysisViewer';
 
-const IDEContainer = () => {
+const IDEContainer = ({ dbCredentials }) => {
   const [activeFile, setActiveFile] = useState(null);
   const [logs, setLogs] = useState([]);
   const [analysis, setAnalysis] = useState({
@@ -46,6 +47,7 @@ const IDEContainer = () => {
             fileName={activeFile}
             onLogUpdate={handleLogUpdate}
             onAnalysisUpdate={handleAnalysisUpdate}
+            dbCredentials={dbCredentials}
           />
         ) : (
           <WelcomeScreen textColor="#00ff00" backgroundColor="#000000" />
@@ -68,6 +70,10 @@ const IDEContainer = () => {
       )}
     </div>
   );
+};
+
+IDEContainer.propTypes = {
+  dbCredentials: PropTypes.object.isRequired,
 };
 
 export default IDEContainer;

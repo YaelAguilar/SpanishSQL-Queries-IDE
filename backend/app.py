@@ -1,16 +1,39 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from lexer import lexer
 from parser import parser
 from semantic import check_semantics, execute_queries, log_stream
+from database import Database
 import logging
 
 app = Flask(__name__)
-CORS(app)
+app.secret_key = 'supersecretkey'
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+
+db_instance = None
+
+@app.route('/connect_db', methods=['POST'])
+def connect_db():
+    data = request.json
+    user = data.get('user')
+    password = data.get('password')
+    host = data.get('host')
+    port = data.get('port')
+    database = data.get('database', None)
+
+    try:
+        global db_instance
+        db_instance = Database(user=user, password=password, host=host, port=port, database=database)
+        return jsonify({'message': 'Connection successful'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
 @app.route('/run_query', methods=['POST'])
 def run_query():
     data = request.json.get('query')
+    
+    if db_instance is None:
+        return jsonify({'error': 'No database connection'}), 400
     
     # Reiniciar el stream de log
     log_stream.truncate(0)
@@ -37,10 +60,10 @@ def run_query():
         }), 400
     
     # Análisis semántico
-    errors = check_semantics(result)
+    errors = check_semantics(result, db_instance)
     
     if not errors:
-        execute_queries(result)
+        execute_queries(result, db_instance)
     
     # Obtener el log
     log_contents = log_stream.getvalue().strip()
