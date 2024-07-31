@@ -70,6 +70,7 @@ class Database:
         try:
             self.connection.database = name
             self.current_db = name
+            logging.info(f"Usando base de datos '{name}'...")
             return None
         except mysql.connector.Error as err:
             return str(err)
@@ -77,10 +78,12 @@ class Database:
     def create_table(self, name, columns):
         columns_def = ', '.join(f"{col[0]} {col[1][0]}({col[1][1]})" if len(col[1]) > 1 else f"{col[0]} {col[1][0]}" for col in columns)
         query = f"CREATE TABLE {name} ({columns_def})"
+        logging.info(f"Creando tabla '{name}' con columnas {columns}.")
         return self.execute(query)
 
     def drop_table(self, name):
         query = f"DROP TABLE IF EXISTS {name}"
+        logging.info(f"Tabla '{name}' eliminada.")
         return self.execute(query)
 
     def table_exists(self, name):
@@ -101,90 +104,95 @@ class Database:
             return result[1]
         return None
 
-def check_semantics(commands, db_instance):
+db = Database(user='root', password='new_password', host='localhost', port='3306')
+
+def check_semantics(commands, db):
     errors = []
     for command in commands:
         if command[0] == 'crear_base':
-            error = db_instance.create_database(command[1])
+            error = db.create_database(command[1])
             if error:
                 errors.append(error)
         elif command[0] == 'usar_base':
-            error = db_instance.use_database(command[1])
+            error = db.use_database(command[1])
             if error:
                 errors.append(error)
         elif command[0] == 'eliminar_base':
-            error = db_instance.drop_database(command[1])
+            error = db.drop_database(command[1])
             if error:
                 errors.append(error)
         elif command[0] == 'crear_tabla':
-            error = db_instance.create_table(command[1], command[2])
+            error = db.create_table(command[1], command[2])
             if error:
                 errors.append(error)
         elif command[0] == 'eliminar_tabla':
-            error = db_instance.drop_table(command[1])
+            error = db.drop_table(command[1])
             if error:
                 errors.append(error)
         elif command[0] == 'seleccionar':
             table = command[2]
-            if not db_instance.table_exists(table):
+            if not db.table_exists(table):
                 errors.append(f"Error: La tabla '{table}' no existe.")
             elif command[1] != '*':
                 for col in command[1]:
-                    if not db_instance.column_exists(table, col):
+                    if not db.column_exists(table, col):
                         errors.append(f"Error: La columna '{col}' no existe en la tabla '{table}'.")
             if command[3] is not None:
-                if not db_instance.column_exists(table, command[3][0]):
+                if not db.column_exists(table, command[3][0]):
                     errors.append(f"Error: La columna '{command[3][0]}' no existe en la tabla '{table}'.")
         elif command[0] == 'insertar':
             table = command[1]
-            if not db_instance.table_exists(table):
+            if not db.table_exists(table):
                 errors.append(f"Error: La tabla '{table}' no existe.")
             else:
                 for col, val in zip(command[2], command[3]):
-                    column_type = db_instance.get_column_type(table, col)
-                    if not db_instance.column_exists(table, col):
+                    column_type = db.get_column_type(table, col)
+                    if not db.column_exists(table, col):
                         errors.append(f"Error: La columna '{col}' no existe en la tabla '{table}'.")
                     elif not isinstance(val, int) and column_type and isinstance(column_type, str) and column_type.startswith('INT'):
                         errors.append(f"Error: Tipo de dato incorrecto para la columna '{col}'. Se esperaba 'INT'.")
         elif command[0] == 'actualizar':
             table = command[1]
-            if not db_instance.table_exists(table):
+            if not db.table_exists(table):
                 errors.append(f"Error: La tabla '{table}' no existe.")
             else:
                 for col, op, val in command[2]:
-                    column_type = db_instance.get_column_type(table, col)
-                    if not db_instance.column_exists(table, col):
+                    column_type = db.get_column_type(table, col)
+                    if not db.column_exists(table, col):
                         errors.append(f"Error: La columna '{col}' no existe en la tabla '{table}'.")
                     elif not isinstance(val, int) and column_type and isinstance(column_type, str) and column_type.startswith('INT'):
                         errors.append(f"Error: Tipo de dato incorrecto para la columna '{col}'. Se esperaba 'INT'.")
-                if not db_instance.column_exists(table, command[3][0]):
+                if not db.column_exists(table, command[3][0]):
                     errors.append(f"Error: La columna '{command[3][0]}' no existe en la tabla '{table}'.")
         elif command[0] == 'borrar':
             table = command[1]
-            if not db_instance.table_exists(table):
+            if not db.table_exists(table):
                 errors.append(f"Error: La tabla '{table}' no existe.")
             else:
-                if not db_instance.column_exists(table, command[2][0]):
+                if not db.column_exists(table, command[2][0]):
                     errors.append(f"Error: La columna '{command[2][0]}' no existe en la tabla '{table}'.")
 
     return errors
 
-def execute_queries(commands, db_instance):
+def execute_queries(commands, db):
     for command in commands:
         if command[0] == 'crear_base':
-            db_instance.create_database(command[1])
+            logging.info(f"Creando base de datos '{command[1]}'...")
+            db.create_database(command[1])
         elif command[0] == 'usar_base':
             logging.info(f"Usando base de datos '{command[1]}'...")
-            db_instance.use_database(command[1])
+            db.use_database(command[1])
         elif command[0] == 'eliminar_base':
-            db_instance.drop_database(command[1])
+            logging.info(f"Eliminando base de datos '{command[1]}'...")
+            db.drop_database(command[1])
         elif command[0] == 'crear_tabla':
             logging.info(f"Creando tabla '{command[1]}' con columnas {command[2]}...")
-            db_instance.create_table(command[1], command[2])
+            db.create_table(command[1], command[2])
         elif command[0] == 'eliminar_tabla':
-            logging.info(f"Tabla '{command[1]}' Eliminada")
-            db_instance.drop_table(command[1])
+            logging.info(f"Tabla '{command[1]}' eliminada.")
+            db.drop_table(command[1])
         elif command[0] == 'seleccionar':
+            logging.info(f"Seleccionando {command[1]} desde '{command[2]}' donde {command[3]}...")
             if command[1] == '*':
                 query = f"SELECT * FROM {command[2]}"
             else:
@@ -194,21 +202,23 @@ def execute_queries(commands, db_instance):
                 params = (command[3][2],)
             else:
                 params = ()
-            db_instance.cursor.execute(query, params)
-            for row in db_instance.cursor.fetchall():
+            db.cursor.execute(query, params)
+            for row in db.cursor.fetchall():
                 logging.info(row)
         elif command[0] == 'insertar':
             logging.info(f"Insertando en '{command[1]}' columnas {command[2]} valores {command[3]}...")
             placeholders = ', '.join(['%s'] * len(command[3]))
             query = f"INSERT INTO {command[1]} ({', '.join(command[2])}) VALUES ({placeholders})"
-            db_instance.execute(query, command[3])
+            db.execute(query, command[3])
         elif command[0] == 'actualizar':
             logging.info(f"Actualizando '{command[1]}' fijar {command[2]} donde {command[3]}...")
             assignments = ', '.join([f"{col} = %s" for col, _, _ in command[2]])
             query = f"UPDATE {command[1]} SET {assignments} WHERE {command[3][0]} = %s"
             params = [val for _, _, val in command[2]] + [command[3][2]]
-            db_instance.execute(query, params)
+            db.execute(query, params)
         elif command[0] == 'borrar':
             logging.info(f"Borrando desde '{command[1]}' donde {command[2]}...")
             query = f"DELETE FROM {command[1]} WHERE {command[2][0]} = %s"
-            db_instance.execute(query, (command[2][2],))
+            db.execute(query, (command[2][2],))
+
+db = Database(user='root', password='new_password', host='localhost', port='3306')

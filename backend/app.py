@@ -8,7 +8,7 @@ import logging
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
-CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+CORS(app, supports_credentials=True)
 
 db_instance = None
 
