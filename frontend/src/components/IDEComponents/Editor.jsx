@@ -21,6 +21,8 @@ const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate, dbCredentials }) => {
 
       if (!response.ok) {
         console.error('Errors:', data['Semantic Errors']);
+        onLogUpdate([`Error: ${data['Semantic Errors']}`]);
+        return;
       }
 
       console.log('Tokens:', data['Lexical Analysis']);
@@ -28,7 +30,7 @@ const Editor = ({ fileName, onLogUpdate, onAnalysisUpdate, dbCredentials }) => {
       console.log('Semantic Errors:', data['Semantic Errors']);
       console.log('Log:', data['Log']);
 
-      onLogUpdate(data['Log'].split('\n'));
+      onLogUpdate(data['Log'] ? data['Log'].split('\n') : []);
 
       onAnalysisUpdate(data['Lexical Analysis'], data['Syntactic Analysis (Parse Tree)'], data['Semantic Errors']);
     } catch (error) {
